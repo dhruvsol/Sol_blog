@@ -1,13 +1,15 @@
 [features]
 seeds = false
-[programs.localnet]
-sol_blog = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+# [programs.localnet]
+# sol_blog = "BnVVGM9kbaFohB8f2uMvHAyiJxoTQT9DkKHS2SiPD3PP"
 
+[programs.devnet]
+sol_blog = "BnVVGM9kbaFohB8f2uMvHAyiJxoTQT9DkKHS2SiPD3PP"
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/home/dhruvraj/.config/solana/id.json"
 
 [scripts]

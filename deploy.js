@@ -25,10 +25,7 @@ const programKeypairFile = path.resolve(
   `${__dirname}${SLASH}${programKeyfileName}`
 );
 
-const connection = new Connection(
-  "https://api.testnet.solana.com",
-  "confirmed"
-);
+const connection = new Connection("https://api.devnet.solana.com", "confirmed");
 
 function readKeyfile(keypairfile) {
   let kf = fs.readFileSync(keypairfile);
@@ -48,42 +45,42 @@ function readKeyfile(keypairfile) {
   console.log({ publicKey: programKeypair.publicKey });
   programId = programKeypair.publicKey.toString();
 
-  if (!fs.existsSync(programAuthorityKeypairFile)) {
-    // doesnt exist create it
-    // use this to deploy
+  // if (!fs.existsSync(programAuthorityKeypairFile)) {
+  //   // doesnt exist create it
+  //   // use this to deploy
 
-    spawn.sync("anchor", ["build"], { stdio: "inherit" });
+  //   spawn.sync("anchor", ["build"], { stdio: "inherit" });
 
-    programAuthorityKeypair = new Keypair();
-    let signature = await connection.requestAirdrop(
-      programAuthorityKeypair.publicKey,
-      LAMPORTS_PER_SOL * 10
-    );
-    await connection.confirmTransaction(signature);
+  //   programAuthorityKeypair = new Keypair();
+  //   let signature = await connection.requestAirdrop(
+  //     programAuthorityKeypair.publicKey,
+  //     LAMPORTS_PER_SOL * 100
+  //   );
+  //   await connection.confirmTransaction(signature);
 
-    console.log(`\n\n\⚙️ Created keypair.\n`);
-    console.log(`\n\n\⚙️ Saving keypair. ${programAuthorityKeypairFile}\n`);
+  //   console.log(`\n\n\⚙️ Created keypair.\n`);
+  //   console.log(`\n\n\⚙️ Saving keypair. ${programAuthorityKeypairFile}\n`);
 
-    fs.writeFileSync(
-      programAuthorityKeypairFile,
-      `[${Buffer.from(programAuthorityKeypair.secretKey.toString())}]`
-    );
+  //   fs.writeFileSync(
+  //     programAuthorityKeypairFile,
+  //     `[${Buffer.from(programAuthorityKeypair.secretKey.toString())}]`
+  //   );
 
-    method = ["deploy"];
-  } else {
-    // does exist, use it to upgrade
+  //   method = ["deploy"];
+  // } else {
+  // does exist, use it to upgrade
 
-    programAuthorityKeypair = readKeyfile(programAuthorityKeypairFile);
+  programAuthorityKeypair = readKeyfile(programAuthorityKeypairFile);
 
-    console.log(`\n\n\⚙️ Upgrading program.\n`);
+  console.log(`\n\n\⚙️ Upgrading program.\n`);
 
-    method = [
-      "upgrade",
-      `target/deploy/${projectName}.so`,
-      "--program-id",
-      programId,
-    ];
-  }
+  method = [
+    "upgrade",
+    `target/deploy/${projectName}.so`,
+    "--program-id",
+    programId,
+  ];
+  // }
 
   console.log({ method });
   spawn.sync(
